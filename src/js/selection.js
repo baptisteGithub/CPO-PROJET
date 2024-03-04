@@ -7,7 +7,7 @@ import * as fct from "/src/js/fonctions.js";
 var player; // désigne le sprite du joueur
 var clavier; // pour la gestion du clavier
 var groupe_plateformes;
-var calque_plateformes
+var calque_plateformes;
 
 // définition de la classe "selection"
 export default class selection extends Phaser.Scene {
@@ -26,10 +26,10 @@ export default class selection extends Phaser.Scene {
   preload() {
     // tous les assets du jeu sont placés dans le sous-répertoire src/assets/
     /*this.load.image("img_ciel", "src/assets/sky.png");
-    this.load.image("img_plateforme", "src/assets/platform.png");
+    this.load.image("img_plateforme", "src/assets/platform.png");*/
     this.load.image("img_porte1", "src/assets/door1.png");
     this.load.image("img_porte2", "src/assets/door2.png");
-    this.load.image("img_porte3", "src/assets/door3.png");*/
+    this.load.image("img_porte3", "src/assets/door3.png");
     this.load.spritesheet("img_perso", "src/assets/dude.png", {
       frameWidth: 32,
       frameHeight: 48
@@ -86,9 +86,15 @@ const calque_ciel = carteDuNiveau.createLayer(
 );
 
 
+
 // chargement du calque calque_plateformes
 const calque_plateformes = carteDuNiveau.createLayer(
   "calque_plateformes",
+  [ts1,ts2]
+);
+
+const calque_decor = carteDuNiveau.createLayer(
+  "calque_decor",
   [ts1,ts2]
 );
 
@@ -117,15 +123,19 @@ const calque_plateformes = carteDuNiveau.createLayer(
     groupe_plateformes.create(600, 450, "img_plateforme");
     groupe_plateformes.create(50, 300, "img_plateforme");
     groupe_plateformes.create(750, 270, "img_plateforme");
-
-    
-    this.porte1 = this.physics.add.staticSprite(600, 414, "img_porte1");
-    this.porte2 = this.physics.add.staticSprite(50, 264, "img_porte2");
-    this.porte3 = this.physics.add.staticSprite(750, 234, "img_porte3");
 */
     
+    this.porte1 = this.physics.add.staticSprite(278, 370, "img_porte1");
+    this.porte2 = this.physics.add.staticSprite(458, 496, "img_porte2");
+    this.porte3 = this.physics.add.staticSprite(667, 365, "img_porte3");
+
+    this.porte1.setVisible(false);
+    this.porte2.setVisible(false);
+    this.porte3.setVisible(false);
+
+    
     // On créée un nouveeau personnage : player
-    player = this.physics.add.sprite(100, 0, "img_perso");
+    player = this.physics.add.sprite(90, 360, "img_perso");
 
     //  propriétées physiqyes de l'objet player :
     player.setBounce(0.2); // on donne un petit coefficient de rebond
