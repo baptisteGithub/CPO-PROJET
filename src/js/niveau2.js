@@ -1,3 +1,4 @@
+var calque_plateformes2;
 export default class niveau2 extends Phaser.Scene {
   // constructeur de la classe
   constructor() {
@@ -5,10 +6,16 @@ export default class niveau2 extends Phaser.Scene {
       key: "niveau2" //  ici on précise le nom de la classe en tant qu'identifiant
     });
   }
-  preload() {}
+  preload() {
+    this.load.image("Phaser_tuilesdejeu", "src/assets/nestle.png");
+    this.load.image("Block_Font","src/assets/BlockFont.png");
+    
+    // chargement de la carte
+    this.load.tilemapTiledJSON("carte2", "src/assets/map_niveau2.tmj");
+  }
 
   create() {
-    this.add.image(400, 300, "img_ciel");
+    /*this.add.image(400, 300, "img_ciel");
     this.groupe_plateformes = this.physics.add.staticGroup();
     this.groupe_plateformes.create(200, 584, "img_plateforme");
     this.groupe_plateformes.create(600, 584, "img_plateforme");
@@ -16,16 +23,58 @@ export default class niveau2 extends Phaser.Scene {
     this.add.text(400, 100, "Vous êtes dans le niveau 2", {
       fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
       fontSize: "22pt"
-    });
+    });*/
+    this.physics.world.setBounds(0, 0, 3200, 640);
 
-    this.porte_retour = this.physics.add.staticSprite(100, 550, "img_porte2");
 
-    this.player = this.physics.add.sprite(100, 450, "img_perso");
+
+    //  ajout du champs de la caméra de taille identique à celle du monde
+    this.cameras.main.setBounds(0, 0, 3200, 640);
+    // ancrage de la caméra sur le joueur
+    //this.cameras.main.startFollow(this.player);
+    // chargement de la carte
+    const carteDuNiveau = this.add.tilemap("carte2");
+    
+    // chargement du jeu de tuiles
+    const ts1 = carteDuNiveau.addTilesetImage(
+       "nestle",
+       "Phaser_tuilesdejeu"
+       
+     );  
+    
+    // chargement du jeu de tuiles
+    const ts2 = carteDuNiveau.addTilesetImage(
+      "Block Font",
+      "Block_Font"
+    
+    );  
+    
+    // chargement du calque calque_background
+    const calque_ciel = carteDuNiveau.createLayer(
+    "calque_ciel2",
+    [ts1,ts2]
+    );
+    
+    
+    
+    // chargement du calque calque_plateformes
+    const calque_plateformes2 = carteDuNiveau.createLayer(
+    "calque_plateformes2",
+    [ts1,ts2]
+    );
+
+    this.porte_retour = this.physics.add.staticSprite(170, 250, "img_porte2");
+    this.porte_retour.setVisible(false);
+
+    this.player = this.physics.add.sprite(215, 215, "img_perso");
     this.player.refreshBody();
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
     this.clavier = this.input.keyboard.createCursorKeys();
-    this.physics.add.collider(this.player, this.groupe_plateformes);
+    //this.physics.add.collider(this.player, this.groupe_plateformes);
+    calque_plateformes2.setCollisionByProperty({ estSolide: true }); 
+    this.physics.add.collider(this.player, calque_plateformes2); 
+    this.cameras.main.startFollow(this.player);
   }
 
   update() {
@@ -39,7 +88,7 @@ export default class niveau2 extends Phaser.Scene {
       this.player.setVelocityX(0);
       this.player.anims.play("anim_face");
     }
-    if (this.clavier.up.isDown && this.player.body.touching.down) {
+    if (this.clavier.up.isDown && this.player.body.blocked.down) {
       this.player.setVelocityY(-330);
     }
 
