@@ -7,6 +7,7 @@ import * as fct from "/src/js/fonctions.js";
 var player; // désigne le sprite du joueur
 var clavier; // pour la gestion du clavier
 var groupe_plateformes;
+var calque_plateformes
 
 // définition de la classe "selection"
 export default class selection extends Phaser.Scene {
@@ -24,15 +25,23 @@ export default class selection extends Phaser.Scene {
    */
   preload() {
     // tous les assets du jeu sont placés dans le sous-répertoire src/assets/
-    this.load.image("img_ciel", "src/assets/sky.png");
+    /*this.load.image("img_ciel", "src/assets/sky.png");
     this.load.image("img_plateforme", "src/assets/platform.png");
+    this.load.image("img_porte1", "src/assets/door1.png");
+    this.load.image("img_porte2", "src/assets/door2.png");
+    this.load.image("img_porte3", "src/assets/door3.png");*/
     this.load.spritesheet("img_perso", "src/assets/dude.png", {
       frameWidth: 32,
       frameHeight: 48
     });
-    this.load.image("img_porte1", "src/assets/door1.png");
-    this.load.image("img_porte2", "src/assets/door2.png");
-    this.load.image("img_porte3", "src/assets/door3.png");
+
+    // chargement tuiles de jeu
+this.load.image("Phaser_tuilesdejeu", "src/assets/nestle.png");
+this.load.image("Block_Font","src/assets/BlockFont.png");
+
+// chargement de la carte
+this.load.tilemapTiledJSON("carte", "src/assets/map1.tmj");
+    
   }
 
   /***********************************************************************/
@@ -49,10 +58,44 @@ export default class selection extends Phaser.Scene {
       fct.doNothing();
       fct.doAlsoNothing();
 
+
+
+// redimentionnement du monde avec les dimensions calculées via tiled
+this.physics.world.setBounds(0, 0, 800, 640);
+       // chargement de la carte
+const carteDuNiveau = this.add.tilemap("carte");
+
+// chargement du jeu de tuiles
+const ts1 = carteDuNiveau.addTilesetImage(
+          "nestle",
+          "Phaser_tuilesdejeu"
+          
+        );  
+
+// chargement du jeu de tuiles
+const ts2 = carteDuNiveau.addTilesetImage(
+         "Block Font",
+         "Block_Font"
+  
+);  
+
+// chargement du calque calque_background
+const calque_ciel = carteDuNiveau.createLayer(
+  "calque_ciel",
+  [ts1,ts2]
+);
+
+
+// chargement du calque calque_plateformes
+const calque_plateformes = carteDuNiveau.createLayer(
+  "calque_plateformes",
+  [ts1,ts2]
+);
+
     /*************************************
      *  CREATION DU MONDE + PLATEFORMES  *
      *************************************/
-
+/*
     // On ajoute une simple image de fond, le ciel, au centre de la zone affichée (400, 300)
     // Par défaut le point d'ancrage d'une image est le centre de cette derniere
     this.add.image(400, 300, "img_ciel");
@@ -75,19 +118,14 @@ export default class selection extends Phaser.Scene {
     groupe_plateformes.create(50, 300, "img_plateforme");
     groupe_plateformes.create(750, 270, "img_plateforme");
 
-    /****************************
-     *  Ajout des portes   *
-     ****************************/
+    
     this.porte1 = this.physics.add.staticSprite(600, 414, "img_porte1");
     this.porte2 = this.physics.add.staticSprite(50, 264, "img_porte2");
     this.porte3 = this.physics.add.staticSprite(750, 234, "img_porte3");
-
-    /****************************
-     *  CREATION DU PERSONNAGE  *
-     ****************************/
-
+*/
+    
     // On créée un nouveeau personnage : player
-    player = this.physics.add.sprite(100, 450, "img_perso");
+    player = this.physics.add.sprite(100, 0, "img_perso");
 
     //  propriétées physiqyes de l'objet player :
     player.setBounce(0.2); // on donne un petit coefficient de rebond
@@ -138,8 +176,10 @@ export default class selection extends Phaser.Scene {
      *  GESTION DES INTERATIONS ENTRE  GROUPES ET ELEMENTS *
      ******************************************************/
 
-    //  Collide the player and the groupe_etoiles with the groupe_plateformes
-    this.physics.add.collider(player, groupe_plateformes);
+    
+    // ajout d'une collision entre le joueur et le calque plateformes
+    calque_plateformes.setCollisionByProperty({ estSolide: true }); 
+this.physics.add.collider(player, calque_plateformes); 
   }
 
   /***********************************************************************/
@@ -159,7 +199,7 @@ export default class selection extends Phaser.Scene {
       player.anims.play("anim_face");
     }
 
-    if (clavier.up.isDown && player.body.touching.down) {
+    if (clavier.up.isDown && player.body.blocked.down) {
       player.setVelocityY(-330);
     }
 
