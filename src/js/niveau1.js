@@ -11,7 +11,7 @@ export default class niveau1 extends Phaser.Scene {
   }
   preload() {
     this.load.image("Phaser_tuilesdejeu", "src/assets/nestle.png");
-this.load.image("Block_Font","src/assets/BlockFont.png");
+    this.load.image("Block_Font","src/assets/BlockFont.png");
 
 // chargement de la carte
 this.load.tilemapTiledJSON("carte1", "src/assets/map_niveau1.tmj");
@@ -23,8 +23,8 @@ this.load.image("img_plateforme_mobile", "src/assets/rondin1.png");
     fct.doNothing();
     fct.doAlsoNothing();
     plateforme_mobile = this.physics.add.sprite(
-      2880,
-      305,
+      2925,
+      350,
       "img_plateforme_mobile"
     ); 
     plateforme_mobile.body.allowGravity = false;
@@ -38,7 +38,7 @@ this.load.image("img_plateforme_mobile", "src/assets/rondin1.png");
       ease: "Linear",  // concerne la vitesse de mouvement : linéaire ici 
       duration: 10000,  // durée de l'animation pour monter 
       yoyo: true,   // mode yoyo : une fois terminé on "rembobine" le déplacement 
-      y: "-=300",   // on va déplacer la plateforme de 300 pixel vers le haut par rapport a sa position
+      y: "-=100",   // on va déplacer la plateforme de 300 pixel vers le haut par rapport a sa position
       delay: 0,     // délai avant le début du tween une fois ce dernier activé
       hold: 1000,   // délai avant le yoyo : temps qeu al plate-forme reste en haut
       repeatDelay: 1000, // deléi avant la répétition : temps que la plate-forme reste en bas
@@ -106,7 +106,9 @@ const calque_decor = carteDuNiveau.createLayer(
     });
 */
     this.porte_retour = this.physics.add.staticSprite(50, 500, "img_porte1");
+    this.porte_retour2 = this.physics.add.staticSprite(3125,210,"img_porte4");
     this.porte_retour.setVisible(false);
+    this.porte_retour2.setVisible(false);
     this.player = this.physics.add.sprite(2800, 0, "img_perso");
     this.player.refreshBody();
     this.player.setBounce(0.2);
@@ -140,6 +142,11 @@ const calque_decor = carteDuNiveau.createLayer(
 
     if (Phaser.Input.Keyboard.JustDown(this.clavier.space) == true) {
       if (this.physics.overlap(this.player, this.porte_retour)) {
+        this.scene.switch("selection");
+      }
+    }
+    if (Phaser.Input.Keyboard.JustDown(this.clavier.space) == true) {
+      if (this.physics.overlap(this.player, this.porte_retour2)) {
         this.scene.switch("selection");
       }
     }

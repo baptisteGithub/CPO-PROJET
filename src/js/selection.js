@@ -30,6 +30,7 @@ export default class selection extends Phaser.Scene {
     this.load.image("img_porte1", "src/assets/door1.png");
     this.load.image("img_porte2", "src/assets/door2.png");
     this.load.image("img_porte3", "src/assets/door3.png");
+    this.load.image("img_porte4","src/assets/door4.png");
     this.load.spritesheet("img_perso", "src/assets/dude.png", {
       frameWidth: 32,
       frameHeight: 48
@@ -189,7 +190,7 @@ const calque_decor = carteDuNiveau.createLayer(
     
     // ajout d'une collision entre le joueur et le calque plateformes
     calque_plateformes.setCollisionByProperty({ estSolide: true }); 
-this.physics.add.collider(player, calque_plateformes); 
+    this.physics.add.collider(player, calque_plateformes); 
   }
 
   /***********************************************************************/
