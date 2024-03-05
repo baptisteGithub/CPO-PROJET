@@ -1,5 +1,7 @@
 import * as fct from "/src/js/fonctions.js";
 var calque_plateformes1;
+var plateforme_mobile; 
+var tween_mouvement; 
 export default class niveau1 extends Phaser.Scene {
   // constructeur de la classe
   constructor() {
@@ -13,11 +15,37 @@ this.load.image("Block_Font","src/assets/BlockFont.png");
 
 // chargement de la carte
 this.load.tilemapTiledJSON("carte1", "src/assets/map_niveau1.tmj");
+
+this.load.image("img_plateforme_mobile", "src/assets/tiny_blue_platform.png");
   }
 
   create() {
     fct.doNothing();
     fct.doAlsoNothing();
+    plateforme_mobile = this.physics.add.sprite(
+      2880,
+      305,
+      "img_plateforme_mobile"
+    ); 
+    plateforme_mobile.body.allowGravity = false;
+    plateforme_mobile.body.immovable = true; 
+    plateforme_mobile.setVisible(true);
+    plateforme_mobile.setDepth(100);
+
+    tween_mouvement = this.tweens.add({
+      targets: [plateforme_mobile],  // on applique le tween sur platefprme_mobile
+      paused: true, // de base le tween est en pause
+      ease: "Linear",  // concerne la vitesse de mouvement : linéaire ici 
+      duration: 10000,  // durée de l'animation pour monter 
+      yoyo: true,   // mode yoyo : une fois terminé on "rembobine" le déplacement 
+      y: "-=300",   // on va déplacer la plateforme de 300 pixel vers le haut par rapport a sa position
+      delay: 0,     // délai avant le début du tween une fois ce dernier activé
+      hold: 1000,   // délai avant le yoyo : temps qeu al plate-forme reste en haut
+      repeatDelay: 1000, // deléi avant la répétition : temps que la plate-forme reste en bas
+      repeat: -1 // répétition infinie 
+       
+    });
+   
 
     /*this.add.image(400, 300, "img_ciel");
     this.groupe_plateformes = this.physics.add.staticGroup();
@@ -62,6 +90,10 @@ const calque_plateformes1 = carteDuNiveau.createLayer(
 "calque_plateformes1",
 [ts1,ts2]
 );
+const calque_decor1 = carteDuNiveau.createLayer(
+  "calque_decor1",
+  [ts1,ts2]
+  );
 /*
 const calque_decor = carteDuNiveau.createLayer(
 "calque_decor",
@@ -75,7 +107,7 @@ const calque_decor = carteDuNiveau.createLayer(
 */
     this.porte_retour = this.physics.add.staticSprite(50, 500, "img_porte1");
     this.porte_retour.setVisible(false);
-    this.player = this.physics.add.sprite(100, 450, "img_perso");
+    this.player = this.physics.add.sprite(2800, 0, "img_perso");
     this.player.refreshBody();
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
@@ -85,9 +117,13 @@ const calque_decor = carteDuNiveau.createLayer(
     calque_plateformes1.setCollisionByProperty({ estSolide: true }); 
     this.physics.add.collider(this.player, calque_plateformes1); 
     this.cameras.main.startFollow(this.player);
+
+    this.physics.add.collider(this.player, plateforme_mobile); 
+    tween_mouvement.play();
   }
 
   update() {
+    
     if (this.clavier.left.isDown) {
       this.player.setVelocityX(-160);
       this.player.anims.play("anim_tourne_gauche", true);
@@ -99,7 +135,7 @@ const calque_decor = carteDuNiveau.createLayer(
       this.player.anims.play("anim_face");
     }
     if (this.clavier.up.isDown && this.player.body.blocked.down) {
-      this.player.setVelocityY(-330);
+      this.player.setVelocityY(-150);
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.clavier.space) == true) {
