@@ -126,7 +126,7 @@ const calque_decor = carteDuNiveau.createLayer(
 
   update() {
     
-    if (this.clavier.left.isDown) {
+    /*if (this.clavier.left.isDown) {
       this.player.setVelocityX(-160);
       this.player.anims.play("anim_tourne_gauche", true);
     } else if (this.clavier.right.isDown) {
@@ -138,7 +138,36 @@ const calque_decor = carteDuNiveau.createLayer(
     }
     if (this.clavier.up.isDown && this.player.body.blocked.down) {
       this.player.setVelocityY(-150);
-    }
+    }*/
+
+    if (this.player.body.blocked.down == true){
+        this.statut_saut = false;
+   }
+   else {
+     this.statut_saut = true
+   }
+ 
+   if (this.clavier.left.isDown ) {
+     this.player.setVelocityX(-130);
+     if (this.statut_saut == false)   this.player.anims.play("anim_tourne_gauche", true);
+   } else if (this.clavier.right.isDown ) {
+     this.player.setVelocityX(130);
+     if ( this.statut_saut == false)
+     this.player.anims.play("anim_tourne_droite", true);
+   } else {
+     this.player.setVelocityX(0);
+     this.player.anims.play("anim_face");
+   }
+
+  
+   if (this.clavier.up.isDown && this.player.body.blocked.down ) {
+     this.player.setVelocityY(-150)
+   }
+   if (this.clavier.right.isDown && this.statut_saut== true)  {
+     this.player.anims.play("anim_saute_droite")
+   }
+   if (this.clavier.left.isDown && this.statut_saut == true) {
+     this.player.anims.play("anim_saute_gauche")}
 
     if (Phaser.Input.Keyboard.JustDown(this.clavier.space) == true) {
       if (this.physics.overlap(this.player, this.porte_retour)) {

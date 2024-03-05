@@ -8,6 +8,7 @@ var player; // désigne le sprite du joueur
 var clavier; // pour la gestion du clavier
 var groupe_plateformes;
 var calque_plateformes;
+var statut_saut;
 
 // définition de la classe "selection"
 export default class selection extends Phaser.Scene {
@@ -42,6 +43,26 @@ this.load.image("Block_Font","src/assets/BlockFont.png");
 
 // chargement de la carte
 this.load.tilemapTiledJSON("carte", "src/assets/map1.tmj");
+
+this.load.spritesheet("img_perso_court", "src/assets/BOY COURT.png", {
+  frameWidth: 32,
+  frameHeight: 55
+});
+
+this.load.spritesheet("img_perso_courtgauche", "src/assets/BOY COURT GAUCHE.png", {
+  frameWidth: 32,
+  frameHeight: 55
+});
+
+this.load.spritesheet("img_perso_sautdroite", "src/assets/BOY JETPACK DROITE.png", {
+  frameWidth: 42,
+  frameHeight: 39
+});
+
+this.load.spritesheet("img_perso_sautgauche", "src/assets/BOY JETPACK GAUCHE.png", {
+  frameWidth: 42,
+  frameHeight: 39
+});	
     
   }
 
@@ -99,6 +120,61 @@ const calque_decor = carteDuNiveau.createLayer(
   [ts1,ts2]
 );
 
+// On créée un nouveeau personnage : player
+player = this.physics.add.sprite(90, 360, "img_perso_court");
+
+
+ this.anims.create({
+      key: "anim_tourne_gauche", // key est le nom de l'animation : doit etre unique poru la scene.
+      frames: this.anims.generateFrameNumbers("img_perso_courtgauche", {
+        start: 0,
+        end: 6
+      }), // on prend toutes les frames de img perso numerotées de 0 à 3
+      frameRate: 10, // vitesse de défilement des frames
+      repeat: -1 // nombre de répétitions de l'animation. -1 = infini
+    });
+
+    // creation de l'animation "anim_tourne_face" qui sera jouée sur le player lorsque ce dernier n'avance pas.
+    this.anims.create({
+      key: "anim_face",
+      frames: [{ key: "img_perso_court", frame: 0 }],
+      frameRate: 20
+    });
+
+    // creation de l'animation "anim_tourne_droite" qui sera jouée sur le player lorsque ce dernier tourne à droite
+    this.anims.create({
+      key: "anim_tourne_droite",
+      frames: this.anims.generateFrameNumbers("img_perso_court", {
+        start: 0,
+        end: 6
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    // creation de l'animation saut droit qui sera jouée sur le player lorsque ce dernier tourne à droite et saute
+    this.anims.create({
+      key: "anim_saute_droite",
+      frames: this.anims.generateFrameNumbers("img_perso_sautdroite", {
+        start: 0,
+        end: 2
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    // creation de l'animation saut GAUCHE qui sera jouée sur le player lorsque ce dernier tourne à GAUCHE et saute
+    this.anims.create({
+      key: "anim_saute_gauche",
+      frames: this.anims.generateFrameNumbers("img_perso_sautgauche", {
+        start: 2,
+        end: 0
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+
     /*************************************
      *  CREATION DU MONDE + PLATEFORMES  *
      *************************************/
@@ -135,8 +211,6 @@ const calque_decor = carteDuNiveau.createLayer(
     this.porte3.setVisible(false);
 
     
-    // On créée un nouveeau personnage : player
-    player = this.physics.add.sprite(90, 360, "img_perso");
 
     //  propriétées physiqyes de l'objet player :
     player.setBounce(0.2); // on donne un petit coefficient de rebond
@@ -149,7 +223,7 @@ const calque_decor = carteDuNiveau.createLayer(
     // chaque animation est une succession de frame à vitesse de défilement défini
     // une animation doit avoir un nom. Quand on voudra la jouer sur un sprite, on utilisera la méthode play()
     // creation de l'animation "anim_tourne_gauche" qui sera jouée sur le player lorsque ce dernier tourne à gauche
-    this.anims.create({
+   /* this.anims.create({
       key: "anim_tourne_gauche", // key est le nom de l'animation : doit etre unique poru la scene.
       frames: this.anims.generateFrameNumbers("img_perso", {
         start: 0,
@@ -175,7 +249,9 @@ const calque_decor = carteDuNiveau.createLayer(
       }),
       frameRate: 10,
       repeat: -1
-    });
+    });*/
+
+
 
     /***********************
      *  CREATION DU CLAVIER *
@@ -198,7 +274,49 @@ const calque_decor = carteDuNiveau.createLayer(
 /***********************************************************************/
 
   update() {
-    
+    if (player.body.blocked.down == true){
+      statut_saut = false;
+   }
+   else {
+     statut_saut = true
+   }
+ 
+   if (clavier.left.isDown ) {
+     player.setVelocityX(-160);
+     if (statut_saut == false)   player.anims.play("anim_tourne_gauche", true);
+   } else if (clavier.right.isDown ) {
+     player.setVelocityX(160);
+     if ( statut_saut == false)
+     player.anims.play("anim_tourne_droite", true);
+   } else {
+     player.setVelocityX(0);
+     player.anims.play("anim_face");
+   }
+
+  
+   if (clavier.up.isDown && player.body.blocked.down ) {
+     player.setVelocityY(-330)
+   }
+   if (clavier.right.isDown && statut_saut== true)  {
+     player.anims.play("anim_saute_droite")
+   }
+   if (clavier.left.isDown && statut_saut == true) {
+     player.anims.play("anim_saute_gauche")}
+   
+
+   if (Phaser.Input.Keyboard.JustDown(clavier.space) == true) {
+     if (this.physics.overlap(player, this.porte1))
+       this.scene.switch("niveau1");
+     if (this.physics.overlap(player, this.porte2))
+       this.scene.switch("niveau2");
+     if (this.physics.overlap(player, this.porte3))
+       this.scene.switch("niveau3");
+   }
+ }
+}
+
+
+    /*
     if (clavier.left.isDown) {
       player.setVelocityX(-160);
       player.anims.play("anim_tourne_gauche", true);
