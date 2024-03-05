@@ -16,7 +16,7 @@ this.load.image("Block_Font","src/assets/BlockFont.png");
 // chargement de la carte
 this.load.tilemapTiledJSON("carte1", "src/assets/map_niveau1.tmj");
 
-this.load.image("img_plateforme_mobile", "src/assets/tiny_blue_platform.png");
+this.load.image("img_plateforme_mobile", "src/assets/rondin1.png");
   }
 
   create() {
