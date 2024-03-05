@@ -23,7 +23,7 @@ this.load.image("img_plateforme_mobile", "src/assets/rondin1.png");
     fct.doNothing();
     fct.doAlsoNothing();
     plateforme_mobile = this.physics.add.sprite(
-      2925,
+      2921,
       350,
       "img_plateforme_mobile"
     ); 
@@ -158,7 +158,6 @@ const calque_decor = carteDuNiveau.createLayer(
      this.player.setVelocityX(0);
      this.player.anims.play("anim_face");
    }
-
   
    if (this.clavier.up.isDown && this.player.body.blocked.down ) {
      this.player.setVelocityY(-150)
@@ -169,15 +168,20 @@ const calque_decor = carteDuNiveau.createLayer(
    if (this.clavier.left.isDown && this.statut_saut == true) {
      this.player.anims.play("anim_saute_gauche")}
 
+
+
     if (Phaser.Input.Keyboard.JustDown(this.clavier.space) == true) {
       if (this.physics.overlap(this.player, this.porte_retour)) {
         this.scene.switch("selection");
       }
-    }
-    if (Phaser.Input.Keyboard.JustDown(this.clavier.space) == true) {
-      if (this.physics.overlap(this.player, this.porte_retour2)) {
+      else if (this.physics.overlap(this.player, this.porte_retour2)) {
         this.scene.switch("selection");
       }
     }
+    /*if (Phaser.Input.Keyboard.JustDown(this.clavier.down) == true) {
+      if (this.physics.overlap(this.player, this.porte_retour2)) {
+        this.scene.switch("selection");
+      }
+    }*/
   }
 }

@@ -46,22 +46,22 @@ this.load.tilemapTiledJSON("carte", "src/assets/map1.tmj");
 
 this.load.spritesheet("img_perso_court", "src/assets/BOY COURT.png", {
   frameWidth: 32,
-  frameHeight: 55
+  frameHeight: 50
 });
 
 this.load.spritesheet("img_perso_courtgauche", "src/assets/BOY COURT GAUCHE.png", {
   frameWidth: 32,
-  frameHeight: 55
+  frameHeight: 50
 });
 
 this.load.spritesheet("img_perso_sautdroite", "src/assets/BOY JETPACK DROITE.png", {
   frameWidth: 42,
-  frameHeight: 39
+  frameHeight: 36
 });
 
 this.load.spritesheet("img_perso_sautgauche", "src/assets/BOY JETPACK GAUCHE.png", {
   frameWidth: 42,
-  frameHeight: 39
+  frameHeight: 33
 });	
     
   }
@@ -130,7 +130,7 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
         start: 0,
         end: 6
       }), // on prend toutes les frames de img perso numerotées de 0 à 3
-      frameRate: 10, // vitesse de défilement des frames
+      frameRate: 5, // vitesse de défilement des frames
       repeat: -1 // nombre de répétitions de l'animation. -1 = infini
     });
 
@@ -148,7 +148,7 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
         start: 0,
         end: 6
       }),
-      frameRate: 10,
+      frameRate: 5,
       repeat: -1
     });
 
@@ -159,7 +159,7 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
         start: 0,
         end: 2
       }),
-      frameRate: 10,
+      frameRate: 5,
       repeat: -1
     });
 
@@ -170,7 +170,7 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
         start: 2,
         end: 0
       }),
-      frameRate: 10,
+      frameRate: 5,
       repeat: -1
     });
 
@@ -178,29 +178,7 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
     /*************************************
      *  CREATION DU MONDE + PLATEFORMES  *
      *************************************/
-/*
-    // On ajoute une simple image de fond, le ciel, au centre de la zone affichée (400, 300)
-    // Par défaut le point d'ancrage d'une image est le centre de cette derniere
-    this.add.image(400, 300, "img_ciel");
 
-    // la création d'un groupes permet de gérer simultanément les éléments d'une meme famille
-    //  Le groupe groupe_plateformes contiendra le sol et deux platesformes sur lesquelles sauter
-    // notez le mot clé "staticGroup" : le static indique que ces élements sont fixes : pas de gravite,
-    // ni de possibilité de les pousser.
-    groupe_plateformes = this.physics.add.staticGroup();
-    // une fois le groupe créé, on va créer les platesformes , le sol, et les ajouter au groupe groupe_plateformes
-
-    // l'image img_plateforme fait 400x32. On en met 2 à coté pour faire le sol
-    // la méthode create permet de créer et d'ajouter automatiquement des objets à un groupe
-    // on précise 2 parametres : chaque coordonnées et la texture de l'objet, et "voila!"
-    groupe_plateformes.create(200, 584, "img_plateforme");
-    groupe_plateformes.create(600, 584, "img_plateforme");
-
-    //  on ajoute 3 platesformes flottantes
-    groupe_plateformes.create(600, 450, "img_plateforme");
-    groupe_plateformes.create(50, 300, "img_plateforme");
-    groupe_plateformes.create(750, 270, "img_plateforme");
-*/
     
     this.porte1 = this.physics.add.staticSprite(278, 370, "img_porte1");
     this.porte2 = this.physics.add.staticSprite(458, 496, "img_porte2");
@@ -213,7 +191,7 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
     
 
     //  propriétées physiqyes de l'objet player :
-    player.setBounce(0.2); // on donne un petit coefficient de rebond
+    //player.setBounce(0.2); // on donne un petit coefficient de rebond
     player.setCollideWorldBounds(true); // le player se cognera contre les bords du monde
 
     /***************************
