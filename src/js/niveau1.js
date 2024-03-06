@@ -7,6 +7,8 @@ var gameOver = false;
 var boutonFeu;  
 var groupeBullets;  
 var  groupe_coins;
+var score = 0;
+var zone_texte_score;
 export default class niveau1 extends Phaser.Scene {
   // constructeur de la classe
   constructor() {
@@ -22,6 +24,7 @@ export default class niveau1 extends Phaser.Scene {
     this.load.tilemapTiledJSON("carte1", "src/assets/map_niveau1.tmj");
 
     this.load.image("img_plateforme_mobile", "src/assets/rondin1.png");
+    this.load.image("img_coin2","src/assets/coins3.png");
 
     /*this.load.spritesheet("img_ennemi", "src/assets/dude.png", {
       frameWidth: 32,
@@ -32,8 +35,8 @@ export default class niveau1 extends Phaser.Scene {
       frameHeight: 48
     });
     this.load.spritesheet("img_coin", "src/assets/coins.png", {
-      frameWidth: 44,
-      frameHeight: 40
+      frameWidth: 40,
+      frameHeight: 44.5
     });
     // chargement de l'image balle.png
  this.load.image("bullet", "src/assets/bullet.png");  
@@ -208,14 +211,28 @@ if (this.physics.overlap(this.player, tween_mouvement)) {
   this.player.y = -100;
 }
 
-//groupe_coins.create(280, 500, "img_coin");
-
+//groupe_coins.create(20, 20, "img_coin2");
+this.physics.add.collider(groupe_coins, calque_plateformes1);
+//groupe_coins = this.physics.add.sprite(1, 0, 'img_coin');
 //groupe_coins.play('anim_coin, true');
+//groupe_coins.play("anim_coin", true);
+
+// on fait une boucle foreach, qui parcours chaque élements du tableau tab_points  
+tab_points.objects.forEach(point => {
+  if (point.name == "coin") {
+    var nouvel_coin = this.physics.add.sprite(point.x, point.y, "img_coin2");
+    groupe_coins.add(nouvel_coin);
+  }
+});
+
+zone_texte_score = this.add.text(50, 50, 'score: 0', { fontSize: '32px' }); 
+  zone_texte_score.setScrollFactor(0); 
+  zone_texte_score.setTint(0xFFA500);
 
   }
 
   update() {
-
+    this.physics.add.overlap(this.player, groupe_coins, ramasserEtoile, null, this);
     /*if (this.clavier.left.isDown) {
       this.player.setVelocityX(-160);
       this.player.anims.play("anim_tourne_gauche", true);
@@ -254,12 +271,16 @@ if (this.physics.overlap(this.player, tween_mouvement)) {
     if (this.clavier.left.isDown) {
       this.player.setVelocityX(-130);
       this.player.direction = 'left';
-      if (this.statut_saut == false) {this.player.anims.play("anim_tourne_gauche", true);}
+      if (this.statut_saut == false) {this.player.anims.play("anim_tourne_gauche", true);
+      this.player.body.setSize(30,50,-20,+10);
+    }
     } else if (this.clavier.right.isDown) {
       this.player.setVelocityX(130);
       this.player.direction = 'right';
       if (this.statut_saut == false){
-      this.player.anims.play("anim_tourne_droite", true);}
+      this.player.anims.play("anim_tourne_droite", true);
+      this.player.body.setSize(30,50,-20,+10);
+    }
     } else {
       this.player.setVelocityX(0);
       this.player.body.setSize(30,50,-20,+10);
@@ -325,12 +346,8 @@ if (this.physics.overlap(this.player, tween_mouvement)) {
       }
     });
     /////////////////////////////////////
-    /*if (Phaser.Input.Keyboard.JustDown(this.clavier.down) == true) {
-      if (this.physics.overlap(this.player, this.porte_retour2)) {
-        this.scene.switch("selection");
-      }
-    }*/
-    if ( Phaser.Input.Keyboard.JustDown(boutonFeu) ) {
+    
+    if ( Phaser.Input.Keyboard.JustDown(boutonFeu) && this.player.body.velocity.y == 0 && this.player.body.velocity.x == 0 ) {
       
       tirer(this.player); 
    }  }
@@ -382,3 +399,15 @@ function hit (uneBalle, uneCible) {
 }, 200);
   //uneCible.destroy();  // destruction de la cible.   
 }  
+
+function ramasserEtoile(un_player, une_etoile) {
+  // on désactive le "corps physique" de l'étoile mais aussi sa texture
+  // l'étoile existe alors sans exister : elle est invisible et ne peut plus intéragir
+  une_etoile.disableBody(true, true);
+  //  on ajoute 10 points au score total, on met à jour l'affichage
+  score += 10;
+  zone_texte_score.setText("Score: " + score); 
+  
+
+
+} 
