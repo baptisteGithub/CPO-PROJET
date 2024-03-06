@@ -32,8 +32,12 @@ export default class selection extends Phaser.Scene {
     this.load.image("img_porte2", "src/assets/door2.png");
     this.load.image("img_porte3", "src/assets/door3.png");
     this.load.image("img_porte4","src/assets/door4.png");
-    this.load.spritesheet("img_perso", "src/assets/dude.png", {
+   /*this.load.spritesheet("img_perso", "src/assets/dude.png", {
       frameWidth: 32,
+      frameHeight: 48
+    });*/
+    this.load.spritesheet("img_perso", "src/assets/ogre.png", {
+      frameWidth: 48,
       frameHeight: 48
     });
 
@@ -63,6 +67,21 @@ this.load.spritesheet("img_perso_sautgauche", "src/assets/BOY JETPACK GAUCHE.png
   frameWidth: 42,
   frameHeight: 33
 });	
+
+this.load.spritesheet("img_perso_tire", "src/assets/BOY SHOT.png", {
+  frameWidth: 40,
+  frameHeight: 50
+});	
+
+this.load.spritesheet("img_perso_tire2", "src/assets/BOY SHOT2.png", {
+  frameWidth: 40,
+  frameHeight: 50
+});	
+
+this.load.spritesheet("img_coin", "src/assets/coins.png", {
+  frameWidth: 44,
+  frameHeight: 40
+});
     
   }
 
@@ -135,9 +154,19 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
     });
 
     // creation de l'animation "anim_tourne_face" qui sera jouée sur le player lorsque ce dernier n'avance pas.
-    this.anims.create({
+    /*this.anims.create({
       key: "anim_face",
       frames: [{ key: "img_perso_court", frame: 0 }],
+      frameRate: 20
+    });*/
+    this.anims.create({
+      key: "anim_face",
+      frames: [{ key: "img_perso_tire", frame: 0 }],
+      frameRate: 20
+    });
+    this.anims.create({
+      key: "anim_face2",
+      frames: [{ key: "img_perso_tire2", frame: 3 }],
       frameRate: 20
     });
 
@@ -174,6 +203,26 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
       repeat: -1
     });
 
+    this.anims.create({
+      key: "anim_tire",
+      frames: this.anims.generateFrameNumbers("img_perso_tire", {
+        start: 0,
+        end: 3
+      }),
+      frameRate: 5,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: "anim_coin",
+      frames: this.anims.generateFrameNumbers("img_coin", {
+        start: 0,
+        end: 3
+      }),
+      frameRate: 5,
+      repeat: -1
+    });
+
 
     /*************************************
      *  CREATION DU MONDE + PLATEFORMES  *
@@ -201,10 +250,12 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
     // chaque animation est une succession de frame à vitesse de défilement défini
     // une animation doit avoir un nom. Quand on voudra la jouer sur un sprite, on utilisera la méthode play()
     // creation de l'animation "anim_tourne_gauche" qui sera jouée sur le player lorsque ce dernier tourne à gauche
-   /* this.anims.create({
-      key: "anim_tourne_gauche", // key est le nom de l'animation : doit etre unique poru la scene.
+
+    /////////////////////////ANIM DUDE////////////////////
+    this.anims.create({
+      key: "anim_tourn_gauche", // key est le nom de l'animation : doit etre unique poru la scene.
       frames: this.anims.generateFrameNumbers("img_perso", {
-        start: 0,
+        start: 5,
         end: 3
       }), // on prend toutes les frames de img perso numerotées de 0 à 3
       frameRate: 10, // vitesse de défilement des frames
@@ -213,22 +264,22 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
 
     // creation de l'animation "anim_tourne_face" qui sera jouée sur le player lorsque ce dernier n'avance pas.
     this.anims.create({
-      key: "anim_face",
-      frames: [{ key: "img_perso", frame: 4 }],
+      key: "anim_fac",
+      frames: [{ key: "img_perso", frame: 1 }],
       frameRate: 20
     });
 
     // creation de l'animation "anim_tourne_droite" qui sera jouée sur le player lorsque ce dernier tourne à droite
     this.anims.create({
-      key: "anim_tourne_droite",
+      key: "anim_tourn_droite",
       frames: this.anims.generateFrameNumbers("img_perso", {
-        start: 5,
+        start: 6,
         end: 8
       }),
       frameRate: 10,
       repeat: -1
-    });*/
-
+    });
+////////////////////////////////////////////////////////////////////
 
 
     /***********************
@@ -245,6 +296,32 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
     // ajout d'une collision entre le joueur et le calque plateformes
     calque_plateformes.setCollisionByProperty({ estSolide: true }); 
     this.physics.add.collider(player, calque_plateformes); 
+    player.direction = 'right';
+
+
+
+    player.body.setSize(30,50,-20,+10);
+
+    player.body.onWorldBounds = true; 
+    // on met en place l'écouteur sur les bornes du monde
+  player.body.world.on(
+    "worldbounds", // evenement surveillé
+    function (body, up, down, left, right) {
+      // on verifie si la hitbox qui est rentrée en collision est celle du player,
+      // et si la collision a eu lieu sur le bord inférieur du player
+      if (body.gameObject === player && down == true) {
+        // si oui : GAME OVER on arrete la physique et on colorie le personnage en rouge
+        this.physics.pause();
+        //player.setTint(0xff0000);
+        var timerRestart = this.time.delayedCall(10,
+          function () {
+            this.scene.restart();
+          },
+          null, this);  
+      }
+    },
+    this
+  ); 
   }
 
   /***********************************************************************/
@@ -261,25 +338,37 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
  
    if (clavier.left.isDown ) {
      player.setVelocityX(-160);
-     if (statut_saut == false)   player.anims.play("anim_tourne_gauche", true);
+     player.direction = 'left';
+     if (statut_saut == false) {
+       player.anims.play("anim_tourne_gauche", true);
+     }else {player.anims.play("anim_saute_gauche", true)}
    } else if (clavier.right.isDown ) {
      player.setVelocityX(160);
-     if ( statut_saut == false)
-     player.anims.play("anim_tourne_droite", true);
+     player.direction = 'right';
+     if ( statut_saut == false){
+     player.anims.play("anim_tourne_droite", true);}
+     else {player.anims.play("anim_saute_droite", true)}
    } else {
      player.setVelocityX(0);
-     player.anims.play("anim_face");
+     if (player.direction == 'left'){
+      player.anims.play("anim_face2");
+    } else if (player.direction == 'right'){
+      player.anims.play("anim_face");
+    }
+    
    }
 
-  
+
+   
    if (clavier.up.isDown && player.body.blocked.down ) {
      player.setVelocityY(-330)
+     if (clavier.right.isDown){
+      player.anims.play("anim_saute_droite", true);
+     } else if(clavier.left.isDown){
+      player.anims.play("anim_saute_gauche", true);
+     }
    }
-   if (clavier.right.isDown && statut_saut== true)  {
-     player.anims.play("anim_saute_droite")
-   }
-   if (clavier.left.isDown && statut_saut == true) {
-     player.anims.play("anim_saute_gauche")}
+   
    
 
    if (Phaser.Input.Keyboard.JustDown(clavier.space) == true) {
