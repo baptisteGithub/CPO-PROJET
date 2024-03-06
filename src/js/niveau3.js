@@ -7,6 +7,9 @@ var groupeBullets;
 var  groupe_coins; 
 var score = 0;
 var zone_texte_score;
+var bouton_regles;
+var bouton_pancarte;
+var num = false;
 
 export default class niveau3 extends Phaser.Scene {
   // constructeur de la classe
@@ -40,6 +43,8 @@ export default class niveau3 extends Phaser.Scene {
 
     this.load.image("bullet3", "src/assets/bullet.png");  
     this.load.image("img_coin3","src/assets/coins3.png");
+    this.load.image("regles","src/assets/unidentified.png");
+this.load.image("pancarte2","src/assets/pancarte2.png");
   }
 
   create() {
@@ -52,6 +57,28 @@ export default class niveau3 extends Phaser.Scene {
       fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
       fontSize: "22pt"
     });*/
+    bouton_regles = this.add.image(752,32, "regles");
+bouton_regles.setVisible(true);
+bouton_regles.setInteractive();
+bouton_regles.setDepth(101);
+bouton_pancarte = this.add.image(400,240, "pancarte2");
+bouton_pancarte.setVisible(false);
+bouton_pancarte.setInteractive();
+bouton_pancarte.setDepth(102);
+bouton_regles.setScrollFactor(0);
+bouton_pancarte.setScrollFactor(0);
+bouton_regles.on("pointerdown",()=>{
+  if (num == false){
+    bouton_pancarte.setVisible(true);
+
+    num = true;
+  }  else {
+    bouton_pancarte.setVisible(false);
+    num = false;
+  }
+})
+
+
     this.physics.world.setBounds(0, 0, 1600, 640);
     
 

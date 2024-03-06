@@ -9,8 +9,9 @@ var clavier; // pour la gestion du clavier
 var groupe_plateformes;
 var calque_plateformes;
 var statut_saut;
-
-
+var bouton_regles;
+var bouton_pancarte;
+var num = false;
 // définition de la classe "selection"
 export default class selection extends Phaser.Scene {
   constructor() {
@@ -83,7 +84,11 @@ this.load.spritesheet("img_coin", "src/assets/coins.png", {
   frameWidth: 44,
   frameHeight: 40
 });
-    
+
+this.load.image("regles","src/assets/unidentified.png");
+this.load.image("pancarte","src/assets/pancarte.png"); 
+//this.load.image("texte","src/assets/text.png");  
+this.load.image("pancarte2","src/assets/pancarte2.png"); 
   }
 
   /***********************************************************************/
@@ -99,6 +104,29 @@ this.load.spritesheet("img_coin", "src/assets/coins.png", {
   create() {
       fct.doNothing();
       fct.doAlsoNothing();
+      clavier = this.input.keyboard.createCursorKeys();
+
+bouton_regles = this.add.image(752,32, "regles");
+bouton_regles.setVisible(true);
+bouton_regles.setInteractive();
+bouton_regles.setDepth(101);
+bouton_pancarte = this.add.image(400,240, "pancarte2");
+bouton_pancarte.setVisible(false);
+bouton_pancarte.setInteractive();
+bouton_pancarte.setDepth(102);
+   
+bouton_regles.on("pointerdown",()=>{
+  if (num == false){
+    bouton_pancarte.setVisible(true);
+
+    num = true;
+  }  else {
+    bouton_pancarte.setVisible(false);
+    num = false;
+  }
+})
+
+
 
 
 
@@ -287,7 +315,7 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
      *  CREATION DU CLAVIER *
      ************************/
     // ceci permet de creer un clavier et de mapper des touches, connaitre l'état des touches
-    clavier = this.input.keyboard.createCursorKeys();
+    
 
     /*****************************************************
      *  GESTION DES INTERATIONS ENTRE  GROUPES ET ELEMENTS *
@@ -332,6 +360,10 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
 /***********************************************************************/
 
   update() {
+
+    
+    
+
     if (player.body.blocked.down == true){
       statut_saut = false;
    }

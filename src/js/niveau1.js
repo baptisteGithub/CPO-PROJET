@@ -9,6 +9,9 @@ var groupeBullets;
 var  groupe_coins;
 var score = 0;
 var zone_texte_score;
+var bouton_regles;
+var bouton_pancarte;
+var num = false;
 export default class niveau1 extends Phaser.Scene {
   // constructeur de la classe
   constructor() {
@@ -40,9 +43,34 @@ export default class niveau1 extends Phaser.Scene {
     });
     // chargement de l'image balle.png
  this.load.image("bullet", "src/assets/bullet.png");  
+ this.load.image("regles","src/assets/unidentified.png"); 
+this.load.image("pancarte2","src/assets/pancarte2.png");
   }
 
   create() {
+
+    bouton_regles = this.add.image(752,32, "regles");
+bouton_regles.setVisible(true);
+bouton_regles.setInteractive();
+bouton_regles.setDepth(101);
+bouton_pancarte = this.add.image(400,240, "pancarte2");
+bouton_pancarte.setVisible(false);
+bouton_pancarte.setInteractive();
+bouton_pancarte.setDepth(102);
+bouton_regles.setScrollFactor(0);
+bouton_pancarte.setScrollFactor(0);
+
+bouton_regles.on("pointerdown",()=>{
+  if (num == false){
+    bouton_pancarte.setVisible(true);
+
+    num = true;
+  }  else {
+    bouton_pancarte.setVisible(false);
+    num = false;
+  }
+})
+
     fct.doNothing();
     fct.doAlsoNothing();
     plateforme_mobile = this.physics.add.sprite(
