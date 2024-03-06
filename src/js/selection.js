@@ -10,6 +10,7 @@ var groupe_plateformes;
 var calque_plateformes;
 var statut_saut;
 
+
 // définition de la classe "selection"
 export default class selection extends Phaser.Scene {
   constructor() {
@@ -300,7 +301,7 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
 
 
 
-    player.body.setSize(30,50,-20,+10);
+    //player.body.setSize(30,50,-20,+10);
 
     player.body.onWorldBounds = true; 
     // on met en place l'écouteur sur les bornes du monde
@@ -322,6 +323,8 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
     },
     this
   ); 
+
+ 
   }
 
   /***********************************************************************/
@@ -341,15 +344,18 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
      player.direction = 'left';
      if (statut_saut == false) {
        player.anims.play("anim_tourne_gauche", true);
+       player.body.setSize(30,50,-20,+10);
      }else {player.anims.play("anim_saute_gauche", true)}
    } else if (clavier.right.isDown ) {
      player.setVelocityX(160);
      player.direction = 'right';
      if ( statut_saut == false){
-     player.anims.play("anim_tourne_droite", true);}
+     player.anims.play("anim_tourne_droite", true);
+     player.body.setSize(30,50,-20,+10);}
      else {player.anims.play("anim_saute_droite", true)}
    } else {
      player.setVelocityX(0);
+     player.body.setSize(30,50,-20,+10);
      if (player.direction == 'left'){
       player.anims.play("anim_face2");
     } else if (player.direction == 'right'){
@@ -358,17 +364,19 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
     
    }
 
-
-   
-   if (clavier.up.isDown && player.body.blocked.down ) {
-     player.setVelocityY(-330)
-     if (clavier.right.isDown){
-      player.anims.play("anim_saute_droite", true);
-     } else if(clavier.left.isDown){
-      player.anims.play("anim_saute_gauche", true);
-     }
-   }
-   
+   if (clavier.up.isDown && player.body.blocked.down) {
+    player.setVelocityY(-330)
+  }
+  if (clavier.right.isDown && statut_saut == true) {
+    player.anims.play("anim_saute_droite");
+    //this.player.body.setSize(25,50,+10,+10);
+    player.body.setCircle(20);
+  }
+  if (clavier.left.isDown && statut_saut == true) {
+    player.anims.play("anim_saute_gauche");
+    player.body.setCircle(20);
+    //this.player.body.setSize(30,50,0,-10);
+  }
    
 
    if (Phaser.Input.Keyboard.JustDown(clavier.space) == true) {

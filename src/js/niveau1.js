@@ -70,10 +70,6 @@ export default class niveau1 extends Phaser.Scene {
     });
 
 
-    /*this.add.image(400, 300, "img_ciel");
-    this.groupe_plateformes = this.physics.add.staticGroup();
-    this.groupe_plateformes.create(200, 584, "img_plateforme");
-    this.groupe_plateformes.create(600, 584, "img_plateforme");*/
     // redimentionnement du monde avec les dimensions calculées via tiled
     this.physics.world.setBounds(0, 0, 3200, 640);
 
@@ -405,7 +401,7 @@ function ramasserEtoile(un_player, une_etoile) {
   // l'étoile existe alors sans exister : elle est invisible et ne peut plus intéragir
   une_etoile.disableBody(true, true);
   //  on ajoute 10 points au score total, on met à jour l'affichage
-  score += 10;
+  score += 1;
   zone_texte_score.setText("Score: " + score); 
   
 
