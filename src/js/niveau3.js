@@ -7,8 +7,9 @@ export default class niveau3 extends Phaser.Scene {
     });
   }
   preload() {
-    this.load.image("Phaser_tuilesdejeu", "src/assets/nestle.png");
+    this.load.image("Phaser_tuilesdejeu3", "src/assets/manor.png");
     this.load.image("Block_Font","src/assets/BlockFont.png");
+    this.load.image("Phaser_tuilesdeciel", "src/assets/fond_manoir.png");
     
     // chargement de la carte
     this.load.tilemapTiledJSON("carte3", "src/assets/map_niveau3.tmj");
@@ -24,12 +25,13 @@ export default class niveau3 extends Phaser.Scene {
       fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
       fontSize: "22pt"
     });*/
-    this.physics.world.setBounds(0, 0, 3200, 640);
+    this.physics.world.setBounds(0, 0, 1600, 640);
+    
 
 
 
     //  ajout du champs de la caméra de taille identique à celle du monde
-    this.cameras.main.setBounds(0, 0, 3200, 640);
+    this.cameras.main.setBounds(0, 0, 1600, 640);
     // ancrage de la caméra sur le joueur
     //this.cameras.main.startFollow(this.player);
     // chargement de la carte
@@ -37,8 +39,8 @@ export default class niveau3 extends Phaser.Scene {
     
     // chargement du jeu de tuiles
     const ts1 = carteDuNiveau.addTilesetImage(
-       "nestle",
-       "Phaser_tuilesdejeu"
+       "manor",
+       "Phaser_tuilesdejeu3"
        
      );  
     
@@ -48,24 +50,28 @@ export default class niveau3 extends Phaser.Scene {
       "Block_Font"
     
     );  
+    const ts3 = carteDuNiveau.addTilesetImage(
+      "fond_manoir",
+      "Phaser_tuilesdeciel"
+      
+    ); 
     
     // chargement du calque calque_background
-    const calque_ciel = carteDuNiveau.createLayer(
+    const calque_ciel= carteDuNiveau.createLayer(
     "calque_ciel3",
-    [ts1,ts2]
+    [ts1,ts2,ts3]
     );
-    
     
     
     // chargement du calque calque_plateformes
     const calque_plateformes3 = carteDuNiveau.createLayer(
     "calque_plateformes3",
-    [ts1,ts2]
+    [ts1,ts2,ts3]
     );
     this.porte_retour = this.physics.add.staticSprite(220, 400, "img_porte3");
     this.porte_retour.setVisible(false);
 
-    this.player = this.physics.add.sprite(150, 300, "img_perso");
+    this.player = this.physics.add.sprite(75, 420, "img_perso");
     this.player.refreshBody();
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
@@ -75,6 +81,8 @@ export default class niveau3 extends Phaser.Scene {
     calque_plateformes3.setCollisionByProperty({ estSolide: true }); 
     this.physics.add.collider(this.player, calque_plateformes3); 
     this.cameras.main.startFollow(this.player);
+
+    this.player.body.setSize(30,45,-20,+10);
   }
 
   update() {
@@ -89,7 +97,7 @@ export default class niveau3 extends Phaser.Scene {
       this.player.anims.play("anim_face");
     }
     if (this.clavier.up.isDown && this.player.body.blocked.down) {
-      this.player.setVelocityY(-330);
+      this.player.setVelocityY(-170);
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.clavier.space) == true) {
