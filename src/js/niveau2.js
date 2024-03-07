@@ -138,7 +138,7 @@ bouton_regles.on("pointerdown",()=>{
 
     // chargement du jeu de tuiles
     const ts1 = carteDuNiveau.addTilesetImage(
-      "Block Font",
+      "BlockFont",
       "Block_Font"
 
     );
@@ -267,9 +267,9 @@ const calque_decor2 = carteDuNiveau.createLayer(
       }
     });*/
 
-    zone_texte_score2 = this.add.text(50, 50, 'score: 0', { fontSize: '32px' });
+    /*zone_texte_score2 = this.add.text(50, 50, 'score: 0', { fontSize: '32px' });
     zone_texte_score2.setScrollFactor(0);
-    zone_texte_score2.setTint(0xFFA500);
+    zone_texte_score2.setTint(0xFFA500);*/
 
 
 
@@ -565,7 +565,7 @@ function ramasserEtoile(un_player, une_etoile) {
   une_etoile.disableBody(true, true);
   //  on ajoute 10 points au score total, on met à jour l'affichage
   score += 10;
-  zone_texte_score.setText("Score: " + score);
+  //zone_texte_score.setText("Score: " + score);
 
 
 
