@@ -12,6 +12,8 @@ var zone_texte_score;
 var bouton_regles;
 var bouton_pancarte;
 var num = false;
+var son_feu;
+var son_mort;
 export default class niveau1 extends Phaser.Scene {
   // constructeur de la classe
   constructor() {
@@ -22,12 +24,16 @@ export default class niveau1 extends Phaser.Scene {
   preload() {
     this.load.image("Phaser_tuilesdejeu", "src/assets/nestle.png");
     this.load.image("Block_Font", "src/assets/BlockFont.png");
-
+    this.load.audio('background','assets/SONFOND.mp3');
     // chargement de la carte
     this.load.tilemapTiledJSON("carte1", "src/assets/map_niveau1.tmj");
 
     this.load.image("img_plateforme_mobile", "src/assets/rondin1.png");
     this.load.image("img_coin2","src/assets/coins3.png");
+
+    this.load.audio('PIOU','src/assets/PIOU.mp3');
+    this.load.audio('MAIS NUL','src/assets/MAIS NUL.mp3');
+
 
     /*this.load.spritesheet("img_ennemi", "src/assets/dude.png", {
       frameWidth: 32,
@@ -59,6 +65,9 @@ bouton_pancarte.setInteractive();
 bouton_pancarte.setDepth(102);
 bouton_regles.setScrollFactor(0);
 bouton_pancarte.setScrollFactor(0);
+
+son_feu = this.sound.add('PIOU');
+son_mort = this.sound.add('MAIS NUL');
 
 bouton_regles.on("pointerdown",()=>{
   if (num == false){
@@ -391,6 +400,7 @@ function chocAvecEnnemi(un_player, un_ennemi) {
     null, this);   
   this.player.anims.play("anim_face");
   gameOver = true;
+  son_mort.play();
   
 } 
 //fonction tirer( ), prenant comme paramètre l'auteur du tir
@@ -408,7 +418,7 @@ function tirer(player) {
         setTimeout(() => {
           bullet.destroy();
       }, 1100);
-        
+      son_feu.play();
  
 }  
 
