@@ -11,7 +11,7 @@ var bouton_regles;
 var bouton_pancarte;
 var num = false;
 var imgfin;
-
+var nbfin = 0;
 export default class niveau3 extends Phaser.Scene {
   // constructeur de la classe
   constructor() {
@@ -160,7 +160,7 @@ bouton_regles.on("pointerdown",()=>{
 
     this.porte_retour = this.physics.add.staticSprite(80, 420, "img_porte3");
     this.porte_retour.setVisible(false);
-    this.porte_retour3 = this.physics.add.staticSprite(75, 420, "img_porte4");
+    this.porte_retour3 = this.physics.add.staticSprite(1530, 110, "img_porte4");
     this.porte_retour3.setVisible(false);
 
     this.player = this.physics.add.sprite(1550, 0, "img_perso_court");
@@ -314,6 +314,7 @@ zone_texte_score = this.add.text(50, 50, 'score: ', { fontSize: '32px' });
         this.scene.switch("selection");
       }
       else if (this.physics.overlap(this.player, this.porte_retour3)) {
+        nbfin=1;
         this.scene.restart();
         this.scene.switch("selection");
       }
