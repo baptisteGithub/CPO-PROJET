@@ -12,6 +12,10 @@ var statut_saut;
 var bouton_regles;
 var bouton_pancarte;
 var num = false;
+var hist = 0;
+var texte1;
+var texte2;
+var texte3;
 // définition de la classe "selection"
 export default class selection extends Phaser.Scene {
   constructor() {
@@ -34,6 +38,9 @@ export default class selection extends Phaser.Scene {
     this.load.image("img_porte2", "src/assets/door2.png");
     this.load.image("img_porte3", "src/assets/door3.png");
     this.load.image("img_porte4","src/assets/door4.png");
+    this.load.image("texte1","src/assets/texte5.png");
+    this.load.image("texte2","src/assets/texte6.png");
+    this.load.image("texte3","src/assets/texte4.png");
    /*this.load.spritesheet("img_perso", "src/assets/dude.png", {
       frameWidth: 32,
       frameHeight: 48
@@ -89,6 +96,11 @@ this.load.spritesheet("img_coin", "src/assets/coins.png", {
 this.load.image("regles","src/assets/unidentified.png");
 this.load.image("pancarte","src/assets/pancarte.png");  
 this.load.image("pancarte2","src/assets/livre.png"); 
+
+this.load.spritesheet("img_perso_ourson", "src/assets/ours dansant.png", {
+  frameWidth: 32,
+  frameHeight: 44
+});
   }
 
   /***********************************************************************/
@@ -125,10 +137,12 @@ bouton_regles.on("pointerdown",()=>{
     num = false;
   }
 })
+if (hist !== 4){
+texte1 = this.add.image(400,510, "texte1");
+hist =1;
+texte1.setDepth(103);
 
-
-
-
+}
 
 // redimentionnement du monde avec les dimensions calculées via tiled
 this.physics.world.setBounds(0, 0, 800, 640);
@@ -177,7 +191,15 @@ const calque_decor = carteDuNiveau.createLayer(
   "calque_decor",
   [ts1,ts2]
 );
-
+this.anims.create({
+  key: "anim_danse", // key est le nom de l'animation : doit etre unique poru la scene.
+  frames: this.anims.generateFrameNumbers("img_perso_ourson", {
+    start: 0,
+    end: 6
+  }), // on prend toutes les frames de img perso numerotées de 0 à 3
+  frameRate: 7, // vitesse de défilement des frames
+  repeat: -1 // nombre de répétitions de l'animation. -1 = infini
+});
 // On créée un nouveeau personnage : player
 player = this.physics.add.sprite(90, 360, "img_perso_court");
 
@@ -361,7 +383,12 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
     },
     this
   ); 
-
+  this.ourson = this.physics.add.sprite(60, 180, "img_perso_ourson");
+  //this.ourson.refreshBody();
+  //this.ourson.setBounce(0.2);
+  //this.ourson.setCollideWorldBounds(true);
+  this.physics.add.collider(this.ourson, calque_plateformes);
+  this.ourson.anims.play("anim_danse", true);
  
   }
 
@@ -371,7 +398,21 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
 
   update() {
 
-    
+   /* if (Phaser.Input.Keyboard.JustDown(clavier.space)== true){
+
+      if (hist ==1){
+        texte1.setVisible(false);
+        texte2 = this.add.image(400,510,"texte2");
+        hist=2;
+      }else if(hist==2){
+        texte2.setVisible(false);
+        texte3 = this.add.image(400,510,"texte3");
+        hist=3;
+      }else if(hist ==3){
+        texte3.setVisible(false);
+        hist =4;
+      }
+    }*/
     
 
     if (player.body.blocked.down == true){
@@ -428,7 +469,20 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
        this.scene.switch("niveau2");
      if (this.physics.overlap(player, this.porte3))
        this.scene.switch("niveau3");
-   }
+       if (hist ==1){
+        texte1.setVisible(false);
+        texte2 = this.add.image(400,510,"texte2");
+        hist=2;
+      } else if(hist==2){
+        texte2.setVisible(false);
+        texte3 = this.add.image(400,510,"texte3");
+        hist=3;
+      } else if(hist ==3){
+        texte3.setVisible(false);
+        hist =4;
+      }
+
+   } 
  }
 }
 

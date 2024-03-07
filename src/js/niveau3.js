@@ -10,6 +10,7 @@ var zone_texte_score;
 var bouton_regles;
 var bouton_pancarte;
 var num = false;
+var imgfin;
 
 export default class niveau3 extends Phaser.Scene {
   // constructeur de la classe
@@ -22,6 +23,8 @@ export default class niveau3 extends Phaser.Scene {
     this.load.image("Phaser_tuilesdejeu3", "src/assets/manor.png");
     this.load.image("Block_Font","src/assets/BlockFont.png");
     this.load.image("Phaser_tuilesdeciel", "src/assets/fond_manoir.png");
+    
+    this.load.image("fin", "src/assets/fin.png");
     
     // chargement de la carte
     this.load.tilemapTiledJSON("carte3", "src/assets/map_niveau3.tmj");
@@ -157,10 +160,10 @@ bouton_regles.on("pointerdown",()=>{
 
     this.porte_retour = this.physics.add.staticSprite(80, 420, "img_porte3");
     this.porte_retour.setVisible(false);
-    this.porte_retour3 = this.physics.add.staticSprite(1530, 110, "img_porte4");
+    this.porte_retour3 = this.physics.add.staticSprite(75, 420, "img_porte4");
     this.porte_retour3.setVisible(false);
 
-    this.player = this.physics.add.sprite(75, 420, "img_perso_court");
+    this.player = this.physics.add.sprite(1550, 0, "img_perso_court");
     this.player.refreshBody();
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
