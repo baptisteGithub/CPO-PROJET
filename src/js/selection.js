@@ -16,7 +16,8 @@ var hist = 0;
 var texte1;
 var texte2;
 var texte3;
-var nbfin;
+//var nbfin;
+//var nbfin2 = localStorage.getItem('nbfin');
 // définition de la classe "selection"
 export default class selection extends Phaser.Scene {
   constructor() {
@@ -118,9 +119,9 @@ this.load.spritesheet("img_perso_ourson", "src/assets/ours dansant.png", {
       fct.doNothing();
       fct.doAlsoNothing();
       clavier = this.input.keyboard.createCursorKeys();
-if (nbfin ==0){
+/*if (nbfin2 ==1){
   console.log("0");
-}
+}*/
 bouton_regles = this.add.image(752,32, "regles");
 bouton_regles.setVisible(true);
 bouton_regles.setInteractive();
@@ -400,6 +401,9 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
 /***********************************************************************/
 
   update() {
+    /*if (nbfin2 ==1){
+      console.log("7");
+    }*/
 
    /* if (Phaser.Input.Keyboard.JustDown(clavier.space)== true){
 

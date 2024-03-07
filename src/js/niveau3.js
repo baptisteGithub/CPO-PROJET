@@ -11,7 +11,7 @@ var bouton_regles;
 var bouton_pancarte;
 var num = false;
 var imgfin;
-var nbfin = 0;
+//var nbfin = 0;
 export default class niveau3 extends Phaser.Scene {
   // constructeur de la classe
   constructor() {
@@ -163,7 +163,7 @@ bouton_regles.on("pointerdown",()=>{
     this.porte_retour3 = this.physics.add.staticSprite(1530, 110, "img_porte4");
     this.porte_retour3.setVisible(false);
 
-    this.player = this.physics.add.sprite(1550, 0, "img_perso_court");
+    this.player = this.physics.add.sprite(75, 420, "img_perso_court");
     this.player.refreshBody();
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
@@ -248,9 +248,9 @@ tab_points3.objects.forEach(point => {
   }
 });
 
-zone_texte_score = this.add.text(50, 50, 'score: ', { fontSize: '32px' }); 
+/*zone_texte_score = this.add.text(50, 50, 'score: ', { fontSize: '32px' }); 
   zone_texte_score.setScrollFactor(0); 
-  zone_texte_score.setTint(0xFFA500);
+  zone_texte_score.setTint(0xFFA500);*/
 
 
   }
@@ -314,8 +314,11 @@ zone_texte_score = this.add.text(50, 50, 'score: ', { fontSize: '32px' });
         this.scene.switch("selection");
       }
       else if (this.physics.overlap(this.player, this.porte_retour3)) {
-        nbfin=1;
+        //nbfin=1;
+        //localStorage.setItem('nbfin');
+        
         this.scene.restart();
+        
         this.scene.switch("selection");
       }
     }
@@ -418,7 +421,7 @@ function ramasserEtoile(un_player, une_etoile) {
   une_etoile.disableBody(true, true);
   //  on ajoute 10 points au score total, on met à jour l'affichage
   score += 1;
-  zone_texte_score.setText("Score: " + score); 
+  //zone_texte_score.setText("Score: " + score); 
   
 
 
