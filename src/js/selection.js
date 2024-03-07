@@ -47,6 +47,7 @@ export default class selection extends Phaser.Scene {
 this.load.image("Phaser_tuilesdejeu", "src/assets/nestle.png");
 this.load.image("Block_Font","src/assets/BlockFont.png");
 this.load.image("manor","src/assets/manor.png");
+this.load.image("JSP","src/assets/JSP.png");
 // chargement de la carte
 this.load.tilemapTiledJSON("carte", "src/assets/map1.tmj");
 
@@ -153,10 +154,15 @@ const ts3 = carteDuNiveau.addTilesetImage(
   "manor"
 
 ); 
+
+const ts4 =carteDuNiveau.addTilesetImage(
+"JSP",
+"JSP"
+);
 // chargement du calque calque_background
 const calque_ciel = carteDuNiveau.createLayer(
   "calque_ciel",
-  [ts1,ts2,ts3]
+  [ts1,ts2,ts3,ts4]
 );
 
 
@@ -164,7 +170,7 @@ const calque_ciel = carteDuNiveau.createLayer(
 // chargement du calque calque_plateformes
 const calque_plateformes = carteDuNiveau.createLayer(
   "calque_plateformes",
-  [ts1,ts2,ts3]
+  [ts1,ts2,ts3,ts4]
 );
 
 const calque_decor = carteDuNiveau.createLayer(

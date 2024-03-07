@@ -8,7 +8,10 @@ var groupeBullets2;
 var groupe_coins2;
 var score2 = 0;
 var zone_texte_score2;
-
+var bouton_regles;
+var bouton_pancarte;
+var num = false;
+var gameOver = false;
 export default class niveau2 extends Phaser.Scene {
   // constructeur de la classe
   constructor() {
@@ -62,10 +65,34 @@ export default class niveau2 extends Phaser.Scene {
       frameHeight: 44.5
     });
     // chargement de l'image balle.png
-    this.load.image("bullet", "src/assets/bullet.png");
+    this.load.image("bullet", "src/assets/bullet.png"); 
+ this.load.image("regles","src/assets/unidentified.png"); 
+this.load.image("pancarte2","src/assets/livre.png");
   }
 
   create() {
+
+    bouton_regles = this.add.image(752,32, "regles");
+bouton_regles.setVisible(true);
+bouton_regles.setInteractive();
+bouton_regles.setDepth(101);
+bouton_pancarte = this.add.image(400,320, "pancarte2");
+bouton_pancarte.setVisible(false);
+bouton_pancarte.setInteractive();
+bouton_pancarte.setDepth(102);
+bouton_regles.setScrollFactor(0);
+bouton_pancarte.setScrollFactor(0);
+
+bouton_regles.on("pointerdown",()=>{
+  if (num == false){
+    bouton_pancarte.setVisible(true);
+
+    num = true;
+  }  else {
+    bouton_pancarte.setVisible(false);
+    num = false;
+  }
+})
     /*this.add.image(400, 300, "img_ciel");
     this.groupe_plateformes = this.physics.add.staticGroup();
     this.groupe_plateformes.create(200, 584, "img_plateforme");
@@ -85,6 +112,16 @@ export default class niveau2 extends Phaser.Scene {
     //this.cameras.main.startFollow(this.player);
     // chargement de la carte
     const carteDuNiveau = this.add.tilemap("carte2");
+
+    this.anims.create({
+      key: "anim_sauteur", // key est le nom de l'animation : doit etre unique poru la scene.
+      frames: this.anims.generateFrameNumbers("img_perso_dino", {
+        start: 0,
+        end: 3
+      }), // on prend toutes les frames de img perso numerotées de 0 à 3
+      frameRate: 8, // vitesse de défilement des frames
+      repeat: -1 // nombre de répétitions de l'animation. -1 = infini
+    });
 
     // chargement du jeu de tuiles
     /* const ts1 = carteDuNiveau.addTilesetImage(
@@ -121,7 +158,10 @@ export default class niveau2 extends Phaser.Scene {
       [ts1, ts2, ts3, ts4,]
     );
 
-
+const calque_decor2 = carteDuNiveau.createLayer(
+"calque_decor2",
+[ts1,ts2,ts3,ts4,]
+);
 
     // chargement du calque calque_plateformes
     calque_plateformes2 = carteDuNiveau.createLayer(
@@ -129,11 +169,11 @@ export default class niveau2 extends Phaser.Scene {
       [ts1, ts2, ts3, ts4,]
     );
 
-    this.porte_retour = this.physics.add.staticSprite(170, 250, "img_porte2");
-    this.porte_retour2 = this.physics.add.staticSprite(3125, 210, "img_porte4");
+    this.porte_retour = this.physics.add.staticSprite(30, 460, "img_porte2");
+    this.porte_retour2 = this.physics.add.staticSprite(3125, 400, "img_porte4");
     this.porte_retour.setVisible(false);
     this.porte_retour2.setVisible(false);
-    this.player = this.physics.add.sprite(100, 450, "img_perso_court");
+    this.player = this.physics.add.sprite(60, 450, "img_perso_court");
     this.player.refreshBody();
     this.player.setBounce(0.0);
     this.player.setCollideWorldBounds(true);
@@ -200,7 +240,7 @@ export default class niveau2 extends Phaser.Scene {
       // on récupère l'objet surveillé
       var objet = body.gameObject;
       // s'il s'agit d'une balle
-      if (groupeBullets.contains(objet)) {
+      if (groupeBullets2.contains(objet)) {
         // on le détruit
         objet.destroy();
       }
@@ -214,12 +254,12 @@ export default class niveau2 extends Phaser.Scene {
     //groupe_coins.play("anim_coin", true);
 
     //on fait une boucle foreach, qui parcours chaque élements du tableau tab_points  
-    tab_points.objects.forEach(point => {
+    /*tab_points.objects.forEach(point => {
       if (point.name == "coin") {
         var nouvel_coin = this.physics.add.sprite(point.x, point.y, "img_coin2");
         groupe_coins2.add(nouvel_coin);
       }
-    });
+    });*/
 
     zone_texte_score2 = this.add.text(50, 50, 'score: 0', { fontSize: '32px' });
     zone_texte_score2.setScrollFactor(0);
@@ -228,7 +268,7 @@ export default class niveau2 extends Phaser.Scene {
 
 
     //JOUEUR PRINCIPAL
-    this.player = this.physics.add.sprite(215, 215, "img_perso_court");
+    /*this.player = this.physics.add.sprite(215, 215, "img_perso_court");
     this.player.refreshBody();
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
@@ -236,9 +276,9 @@ export default class niveau2 extends Phaser.Scene {
     this.physics.add.collider(this.player, calque_plateformes2);
     calque_plateformes2.setCollisionByProperty({ estSolide: true });
     this.physics.add.collider(this.player, calque_plateformes2);
-    this.cameras.main.startFollow(this.player);
+    this.cameras.main.startFollow(this.player);*/
 
-    //OURSON
+   /* //OURSON
     this.ourson = this.physics.add.sprite(90, 120, "img_perso_ourson");
     this.ourson.refreshBody();
     this.ourson.setBounce(0.2);
@@ -258,19 +298,19 @@ export default class niveau2 extends Phaser.Scene {
       repeat: -1 // nombre de répétitions de l'animation. -1 = infini
     });
 
-    this.ourson.anims.play("anim_danse", true);
+    this.ourson.anims.play("anim_danse", true);*/
 
     //DINO
-    this.dino = this.physics.add.sprite(90, 120, "img_perso_dino");
+    /*this.dino = this.physics.add.sprite(40, 120, "img_perso_dino");
     this.dino.refreshBody();
     this.dino.setBounce(0.2);
     this.dino.setCollideWorldBounds(true);
     calque_plateformes2.setCollisionByProperty({ estSolide: true });
     this.physics.add.collider(this.dino, calque_plateformes2);
     this.cameras.main.startFollow(this.dino);
+*/
 
-
-    this.anims.create({
+    /*this.anims.create({
       key: "anim_sauteur", // key est le nom de l'animation : doit etre unique poru la scene.
       frames: this.anims.generateFrameNumbers("img_perso_dino", {
         start: 0,
@@ -278,10 +318,10 @@ export default class niveau2 extends Phaser.Scene {
       }), // on prend toutes les frames de img perso numerotées de 0 à 3
       frameRate: 8, // vitesse de défilement des frames
       repeat: -1 // nombre de répétitions de l'animation. -1 = infini
-    });
+    });*/
 
-    this.dino.anims.play("anim_sauteur", true);
-
+    //this.dino.anims.play("anim_sauteur", true);
+/*
     //ZOMBIE
     this.zombie = this.physics.add.sprite(90, 120, "img_perso_zombie");
     this.zombie.refreshBody();
@@ -356,54 +396,20 @@ export default class niveau2 extends Phaser.Scene {
     //POULET
 
     //PIEUVRE
+*/
 
 
 
-
-    this.cameras.main.setBounds(0, 0, 3200, 640);
+   /* this.cameras.main.setBounds(0, 0, 3200, 640);
     //ancrage de la caméra sur le joueur
-    this.cameras.main.startFollow(this.player);
+    this.cameras.main.startFollow(this.player);*/
   }
 
 
 
 
   update() {
-    if (this.clavier.left.isDown) {
-      this.player.setVelocityX(-160);
-      this.player.anims.play("anim_tourne_gauche", true);
-    } else if (this.clavier.right.isDown) {
-      this.player.setVelocityX(160);
-      this.player.anims.play("anim_tourne_droite", true);
-    } else {
-      this.player.setVelocityX(0);
-      this.player.anims.play("anim_face");
-    }
-    if (this.clavier.up.isDown && this.player.body.blocked.down) {
-      this.player.setVelocityY(-300);
-    }
-
-    if (Phaser.Input.Keyboard.JustDown(this.clavier.space) == true) {
-      if (this.physics.overlap(this.player, this.porte_retour)) {
-        console.log("niveau 3 : retour vers selection");
-        this.scene.switch("selection");
-      }
-    }
-
-    this.physics.add.overlap(this.player, groupe_coins2, ramasserEtoile, null, this);
-    /*if (this.clavier.left.isDown) {
-      this.player.setVelocityX(-160);
-      this.player.anims.play("anim_tourne_gauche", true);
-    } else if (this.clavier.right.isDown) {
-      this.player.setVelocityX(160);
-      this.player.anims.play("anim_tourne_droite", true);
-    } else {
-      this.player.setVelocityX(0);
-      this.player.anims.play("anim_face");
-    }
-    if (this.clavier.up.isDown && this.player.body.blocked.down) {
-      this.player.setVelocityY(-150);
-    }*/
+   
 
     if (this.player.body.blocked.down == true) {
       this.statut_saut = false;
@@ -412,19 +418,7 @@ export default class niveau2 extends Phaser.Scene {
       this.statut_saut = true
     }
 
-    /* if (this.clavier.left.isDown) {
-       this.player.setVelocityX(-130);
-       this.player.direction = 'left';
-       if (this.statut_saut == false) this.player.anims.play("anim_tourne_gauche", true);
-     } else if (this.clavier.right.isDown) {
-       this.player.setVelocityX(130);
-       this.player.direction = 'right';
-       if (this.statut_saut == false)
-       this.player.anims.play("anim_tourne_droite", true);
-     } else {
-       this.player.setVelocityX(0);
-       this.player.anims.play("anim_face2");
-     }*/
+    
 
     if (this.clavier.left.isDown) {
       this.player.setVelocityX(-130);
@@ -452,7 +446,7 @@ export default class niveau2 extends Phaser.Scene {
     }
 
     if (this.clavier.up.isDown && this.player.body.blocked.down) {
-      this.player.setVelocityY(-190)
+      this.player.setVelocityY(-350)
     }
     if (this.clavier.right.isDown && this.statut_saut == true) {
       this.player.anims.play("anim_saute_droite");
@@ -506,7 +500,7 @@ export default class niveau2 extends Phaser.Scene {
     });
     /////////////////////////////////////
 
-    if (Phaser.Input.Keyboard.JustDown(boutonFeu2) && this.player.body.velocity.y == 0 && this.player.body.velocity.x == 0) {
+    if (Phaser.Input.Keyboard.JustDown(boutonFeu2)  && this.player.body.blocked.down && this.player.body.velocity.x == 0) {
 
       tirer(this.player);
     }
@@ -532,7 +526,7 @@ function tirer(player) {
   var coefDir;
   if (player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
   // on crée la balle a coté du joueur
-  var bullet = groupeBullets.create(player.x + (25 * coefDir), player.y + 10, 'bullet');
+  var bullet = groupeBullets2.create(player.x + (25 * coefDir), player.y + 10, 'bullet');
   // parametres physiques de la balle.
   bullet.setCollideWorldBounds(true);
   bullet.body.onWorldBounds = true;
