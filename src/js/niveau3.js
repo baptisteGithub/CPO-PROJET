@@ -12,6 +12,8 @@ var bouton_pancarte;
 var num = false;
 var imgfin;
 var nbfin = 0;
+var son_feu2;
+var son_mort2;
 export default class niveau3 extends Phaser.Scene {
   // constructeur de la classe
   constructor() {
@@ -25,6 +27,8 @@ export default class niveau3 extends Phaser.Scene {
     this.load.image("Phaser_tuilesdeciel", "src/assets/fond_manoir.png");
     
     this.load.image("fin", "src/assets/fin.png");
+    this.load.audio('PIOU2','src/assets/PIOU.mp3');
+    this.load.audio('MONSTRE 2','src/assets/MONSTRE 2.mp3');
     
     // chargement de la carte
     this.load.tilemapTiledJSON("carte3", "src/assets/map_niveau3.tmj");
@@ -70,6 +74,10 @@ bouton_pancarte.setInteractive();
 bouton_pancarte.setDepth(102);
 bouton_regles.setScrollFactor(0);
 bouton_pancarte.setScrollFactor(0);
+
+son_feu2 = this.sound.add('PIOU2');
+son_mort2 = this.sound.add('MONSTRE 2');
+
 bouton_regles.on("pointerdown",()=>{
   if (num == false){
     bouton_pancarte.setVisible(true);
@@ -163,7 +171,7 @@ bouton_regles.on("pointerdown",()=>{
     this.porte_retour3 = this.physics.add.staticSprite(1530, 110, "img_porte4");
     this.porte_retour3.setVisible(false);
 
-    this.player = this.physics.add.sprite(1550, 0, "img_perso_court");
+    this.player = this.physics.add.sprite(100, 0, "img_perso_court");
     this.player.refreshBody();
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
@@ -380,6 +388,7 @@ function chocAvecEnnemi(un_player, un_ennemi) {
     null, this);   
   this.player.anims.play("anim_face");
   gameOver = true;
+  son_mort2.play();
   
 } 
 function tirer(player) {
@@ -396,7 +405,7 @@ function tirer(player) {
         setTimeout(() => {
           bullet.destroy();
       }, 1100); 
-        
+      son_feu2.play();
  
 }  
 

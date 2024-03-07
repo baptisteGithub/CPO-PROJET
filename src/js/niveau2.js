@@ -12,6 +12,8 @@ var bouton_regles;
 var bouton_pancarte;
 var num = false;
 var gameOver = false;
+var son_feu1;
+var son_mort1;
 export default class niveau2 extends Phaser.Scene {
   // constructeur de la classe
   constructor() {
@@ -26,7 +28,8 @@ export default class niveau2 extends Phaser.Scene {
     this.load.image("JSP", "src/assets/JSP.png");
     this.load.image("fondglace", "src/assets/bismillah.png");
     this.load.image("tuilesniv2", "src/assets/preview2.png");
-
+    this.load.audio('PIOU1','src/assets/PIOU.mp3');
+    this.load.audio('ANGLES MORTS','src/assets/ANGLES MORTS.mp3');
     // chargement de la carte
     this.load.tilemapTiledJSON("carte2", "src/assets/map_niveau2bis.tmj");
     this.load.image("img_coin2", "src/assets/coins3.png");
@@ -82,6 +85,9 @@ bouton_pancarte.setInteractive();
 bouton_pancarte.setDepth(102);
 bouton_regles.setScrollFactor(0);
 bouton_pancarte.setScrollFactor(0);
+
+son_feu1 = this.sound.add('PIOU1');
+son_mort1 = this.sound.add('ANGLES MORTS');
 
 bouton_regles.on("pointerdown",()=>{
   if (num == false){
@@ -518,6 +524,7 @@ function chocAvecEnnemi(un_player, un_ennemi) {
     null, this);
   this.player.anims.play("anim_face");
   gameOver = true;
+  son_mort1.play();
 
 }
 //fonction tirer( ), prenant comme paramètre l'auteur du tir
@@ -535,6 +542,7 @@ function tirer(player) {
   setTimeout(() => {
     bullet.destroy();
   }, 1100);
+  son_feu1.play();
 
 
 }
