@@ -164,9 +164,9 @@ bouton_regles.on("pointerdown",()=>{
     });
 */
     this.porte_retour = this.physics.add.staticSprite(50, 500, "img_porte1");
-    this.porte_retour2 = this.physics.add.staticSprite(3125, 210, "img_porte4");
+    this.porte_retour7 = this.physics.add.staticSprite(3125, 210, "img_porte4");
     this.porte_retour.setVisible(false);
-    this.porte_retour2.setVisible(false);
+    this.porte_retour7.setVisible(false);
     this.player = this.physics.add.sprite(100, 450, "img_perso_court");
     this.player.refreshBody();
     this.player.setBounce(0.0);
@@ -345,9 +345,10 @@ tab_points.objects.forEach(point => {
       if (this.physics.overlap(this.player, this.porte_retour)) {
         this.scene.switch("selection");
       }
-      else if (this.physics.overlap(this.player, this.porte_retour2)) {
-        this.scene.restart();
+      else if (this.physics.overlap(this.player, this.porte_retour7)) {
         this.scene.switch("selection");
+        this.scene.restart();
+       
       }
     }
     //////////////////////////
