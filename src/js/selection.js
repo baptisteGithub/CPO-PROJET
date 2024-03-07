@@ -46,7 +46,7 @@ export default class selection extends Phaser.Scene {
     // chargement tuiles de jeu
 this.load.image("Phaser_tuilesdejeu", "src/assets/nestle.png");
 this.load.image("Block_Font","src/assets/BlockFont.png");
-
+this.load.image("manor","src/assets/manor.png");
 // chargement de la carte
 this.load.tilemapTiledJSON("carte", "src/assets/map1.tmj");
 
@@ -86,9 +86,8 @@ this.load.spritesheet("img_coin", "src/assets/coins.png", {
 });
 
 this.load.image("regles","src/assets/unidentified.png");
-this.load.image("pancarte","src/assets/pancarte.png"); 
-//this.load.image("texte","src/assets/text.png");  
-this.load.image("pancarte2","src/assets/pancarte2.png"); 
+this.load.image("pancarte","src/assets/pancarte.png");  
+this.load.image("pancarte2","src/assets/livre.png"); 
   }
 
   /***********************************************************************/
@@ -110,7 +109,7 @@ bouton_regles = this.add.image(752,32, "regles");
 bouton_regles.setVisible(true);
 bouton_regles.setInteractive();
 bouton_regles.setDepth(101);
-bouton_pancarte = this.add.image(400,240, "pancarte2");
+bouton_pancarte = this.add.image(400,320, "pancarte2");
 bouton_pancarte.setVisible(false);
 bouton_pancarte.setInteractive();
 bouton_pancarte.setDepth(102);
@@ -149,10 +148,15 @@ const ts2 = carteDuNiveau.addTilesetImage(
   
 );  
 
+const ts3 = carteDuNiveau.addTilesetImage(
+  "manor",
+  "manor"
+
+); 
 // chargement du calque calque_background
 const calque_ciel = carteDuNiveau.createLayer(
   "calque_ciel",
-  [ts1,ts2]
+  [ts1,ts2,ts3]
 );
 
 
@@ -160,7 +164,7 @@ const calque_ciel = carteDuNiveau.createLayer(
 // chargement du calque calque_plateformes
 const calque_plateformes = carteDuNiveau.createLayer(
   "calque_plateformes",
-  [ts1,ts2]
+  [ts1,ts2,ts3]
 );
 
 const calque_decor = carteDuNiveau.createLayer(

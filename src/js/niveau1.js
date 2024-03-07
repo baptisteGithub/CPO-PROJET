@@ -44,7 +44,7 @@ export default class niveau1 extends Phaser.Scene {
     // chargement de l'image balle.png
  this.load.image("bullet", "src/assets/bullet.png");  
  this.load.image("regles","src/assets/unidentified.png"); 
-this.load.image("pancarte2","src/assets/pancarte2.png");
+this.load.image("pancarte2","src/assets/livre.png");
   }
 
   create() {
@@ -53,7 +53,7 @@ this.load.image("pancarte2","src/assets/pancarte2.png");
 bouton_regles.setVisible(true);
 bouton_regles.setInteractive();
 bouton_regles.setDepth(101);
-bouton_pancarte = this.add.image(400,240, "pancarte2");
+bouton_pancarte = this.add.image(400,320, "pancarte2");
 bouton_pancarte.setVisible(false);
 bouton_pancarte.setInteractive();
 bouton_pancarte.setDepth(102);
@@ -249,7 +249,7 @@ tab_points.objects.forEach(point => {
   }
 });
 
-zone_texte_score = this.add.text(50, 50, 'score: 0', { fontSize: '32px' }); 
+zone_texte_score = this.add.text(50, 50, 'score: ', { fontSize: '32px' }); 
   zone_texte_score.setScrollFactor(0); 
   zone_texte_score.setTint(0xFFA500);
 
