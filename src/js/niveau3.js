@@ -55,15 +55,7 @@ this.load.image("pancarte2","src/assets/livre.png");
   }
 
   create() {
-    /*this.add.image(400, 300, "img_ciel");
-    this.groupe_plateformes = this.physics.add.staticGroup();
-    this.groupe_plateformes.create(200, 584, "img_plateforme");
-    this.groupe_plateformes.create(600, 584, "img_plateforme");
-    // ajout d'un texte distintcif  du niveau
-    this.add.text(400, 100, "Vous êtes dans le niveau 3", {
-      fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-      fontSize: "22pt"
-    });*/
+   
     bouton_regles = this.add.image(752,32, "regles");
 bouton_regles.setVisible(true);
 bouton_regles.setInteractive();

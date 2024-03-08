@@ -54,6 +54,7 @@ this.load.image("pancarte2","src/assets/livre.png");
   }
 
   create() {
+    
 
     bouton_regles = this.add.image(752,32, "regles");
 bouton_regles.setVisible(true);
@@ -164,7 +165,7 @@ bouton_regles.on("pointerdown",()=>{
     });
 */
     this.porte_retour = this.physics.add.staticSprite(50, 500, "img_porte1");
-    this.porte_retour7 = this.physics.add.staticSprite(3125, 210, "img_porte4");
+    this.porte_retour7 = this.physics.add.staticSprite(3125, 210, "img_porte2");
     this.porte_retour.setVisible(false);
     this.porte_retour7.setVisible(false);
     this.player = this.physics.add.sprite(100, 450, "img_perso_court");
@@ -266,19 +267,7 @@ tab_points.objects.forEach(point => {
 
   update() {
     this.physics.add.overlap(this.player, groupe_coins, ramasserEtoile, null, this);
-    /*if (this.clavier.left.isDown) {
-      this.player.setVelocityX(-160);
-      this.player.anims.play("anim_tourne_gauche", true);
-    } else if (this.clavier.right.isDown) {
-      this.player.setVelocityX(160);
-      this.player.anims.play("anim_tourne_droite", true);
-    } else {
-      this.player.setVelocityX(0);
-      this.player.anims.play("anim_face");
-    }
-    if (this.clavier.up.isDown && this.player.body.blocked.down) {
-      this.player.setVelocityY(-150);
-    }*/
+    
     
     if (this.player.body.blocked.down == true) {
       this.statut_saut = false;
@@ -286,20 +275,6 @@ tab_points.objects.forEach(point => {
     else {
       this.statut_saut = true
     }
-
-   /* if (this.clavier.left.isDown) {
-      this.player.setVelocityX(-130);
-      this.player.direction = 'left';
-      if (this.statut_saut == false) this.player.anims.play("anim_tourne_gauche", true);
-    } else if (this.clavier.right.isDown) {
-      this.player.setVelocityX(130);
-      this.player.direction = 'right';
-      if (this.statut_saut == false)
-      this.player.anims.play("anim_tourne_droite", true);
-    } else {
-      this.player.setVelocityX(0);
-      this.player.anims.play("anim_face2");
-    }*/
 
     if (this.clavier.left.isDown) {
       this.player.setVelocityX(-130);
@@ -346,9 +321,8 @@ tab_points.objects.forEach(point => {
         this.scene.switch("selection");
       }
       else if (this.physics.overlap(this.player, this.porte_retour7)) {
-        this.scene.switch("selection");
         this.scene.restart();
-       
+        this.scene.switch("selection");
       }
     }
     //////////////////////////

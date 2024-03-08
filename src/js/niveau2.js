@@ -99,15 +99,7 @@ bouton_regles.on("pointerdown",()=>{
     num = false;
   }
 })
-    /*this.add.image(400, 300, "img_ciel");
-    this.groupe_plateformes = this.physics.add.staticGroup();
-    this.groupe_plateformes.create(200, 584, "img_plateforme");
-    this.groupe_plateformes.create(600, 584, "img_plateforme");
-    // ajout d'un texte distintcif  du niveau
-    this.add.text(400, 100, "Vous êtes dans le niveau 2", {
-      fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-      fontSize: "22pt"
-    });*/
+    
     this.physics.world.setBounds(0, 0, 3200, 640);
 
 
@@ -396,19 +388,8 @@ const calque_decor2 = carteDuNiveau.createLayer(
 
     this.glaceurs.anims.play("anim_glace", true);
 
-    //LUTIN
-
-
-    //POULET
-
-    //PIEUVRE
 */
 
-
-
-   /* this.cameras.main.setBounds(0, 0, 3200, 640);
-    //ancrage de la caméra sur le joueur
-    this.cameras.main.startFollow(this.player);*/
   }
 
 

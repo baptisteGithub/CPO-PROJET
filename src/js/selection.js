@@ -34,8 +34,7 @@ export default class selection extends Phaser.Scene {
    */
   preload() {
     // tous les assets du jeu sont placés dans le sous-répertoire src/assets/
-    /*this.load.image("img_ciel", "src/assets/sky.png");
-    this.load.image("img_plateforme", "src/assets/platform.png");*/
+    
     this.load.image("img_porte1", "src/assets/door1.png");
     this.load.image("img_porte2", "src/assets/door2.png");
     this.load.image("img_porte3", "src/assets/door3.png");
@@ -218,12 +217,7 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
       repeat: -1 // nombre de répétitions de l'animation. -1 = infini
     });
 
-    // creation de l'animation "anim_tourne_face" qui sera jouée sur le player lorsque ce dernier n'avance pas.
-    /*this.anims.create({
-      key: "anim_face",
-      frames: [{ key: "img_perso_court", frame: 0 }],
-      frameRate: 20
-    });*/
+    
     this.anims.create({
       key: "anim_face",
       frames: [{ key: "img_perso_tire", frame: 0 }],
@@ -387,7 +381,7 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
     },
     this
   ); 
-  this.ourson = this.physics.add.sprite(60, 180, "img_perso_ourson");
+  this.ourson = this.physics.add.sprite(60, 220, "img_perso_ourson");
   //this.ourson.refreshBody();
   //this.ourson.setBounce(0.2);
   //this.ourson.setCollideWorldBounds(true);
@@ -401,25 +395,7 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
 /***********************************************************************/
 
   update() {
-    /*if (nbfin2 ==1){
-      console.log("7");
-    }*/
-
-   /* if (Phaser.Input.Keyboard.JustDown(clavier.space)== true){
-
-      if (hist ==1){
-        texte1.setVisible(false);
-        texte2 = this.add.image(400,510,"texte2");
-        hist=2;
-      }else if(hist==2){
-        texte2.setVisible(false);
-        texte3 = this.add.image(400,510,"texte3");
-        hist=3;
-      }else if(hist ==3){
-        texte3.setVisible(false);
-        hist =4;
-      }
-    }*/
+    
     
 
     if (player.body.blocked.down == true){
@@ -494,33 +470,4 @@ player = this.physics.add.sprite(90, 360, "img_perso_court");
 }
 
 
-    /*
-    if (clavier.left.isDown) {
-      player.setVelocityX(-160);
-      player.anims.play("anim_tourne_gauche", true);
-    } else if (clavier.right.isDown) {
-      player.setVelocityX(160);
-      player.anims.play("anim_tourne_droite", true);
-    } else {
-      player.setVelocityX(0);
-      player.anims.play("anim_face");
-    }
-
-    if (clavier.up.isDown && player.body.blocked.down) {
-      player.setVelocityY(-330);
-    }
-
-    if (Phaser.Input.Keyboard.JustDown(clavier.space) == true) {
-      if (this.physics.overlap(player, this.porte1))
-        this.scene.switch("niveau1");
-      if (this.physics.overlap(player, this.porte2))
-        this.scene.switch("niveau2");
-      if (this.physics.overlap(player, this.porte3))
-        this.scene.switch("niveau3");
-    }
-  }
-}
-
-/***********************************************************************/
-/** CONFIGURATION GLOBALE DU JEU ET LANCEMENT 
-/***********************************************************************/
+  
