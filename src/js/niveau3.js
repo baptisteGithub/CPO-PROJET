@@ -171,7 +171,7 @@ bouton_regles.on("pointerdown",()=>{
     this.porte_retour3 = this.physics.add.staticSprite(1530, 110, "img_porte4");
     this.porte_retour3.setVisible(false);
 
-    this.player = this.physics.add.sprite(100, 0, "img_perso_court");
+    this.player = this.physics.add.sprite(110, 420, "img_perso_court");
     this.player.refreshBody();
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
